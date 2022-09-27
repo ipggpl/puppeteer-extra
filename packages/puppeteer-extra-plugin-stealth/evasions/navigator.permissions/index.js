@@ -22,6 +22,8 @@ class Plugin extends PuppeteerExtraPlugin {
   /* global Notification Permissions PermissionStatus */
   async onPageCreated(page) {
     await withUtils(page).evaluateOnNewDocument((utils, opts) => {
+      
+      if (Notification!==undefined) {
       const isSecure = document.location.protocol.startsWith('https')
 
       // In headful on secure origins the permission should be "default", not "denied"
@@ -60,6 +62,7 @@ class Plugin extends PuppeteerExtraPlugin {
         }
         // Note: Don't use `Object.getPrototypeOf` here
         utils.replaceWithProxy(Permissions.prototype, 'query', handler)
+      }
       }
     }, this.opts)
   }
